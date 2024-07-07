@@ -1,6 +1,12 @@
+import 'dotenv/config';
 import Fastify from 'fastify';
+import { initializeApp } from 'firebase-admin/app';
 import { routes } from './routes';
 import './database/redis';
+import { firebaseConfig } from './config/firebase';
+import { PORT } from './utils/env';
+
+initializeApp(firebaseConfig);
 
 const fastify = Fastify({
   logger: true
@@ -8,6 +14,6 @@ const fastify = Fastify({
 
 fastify.register(routes);
 
-fastify.listen({ port: 3333 }).then(() => {
-  console.log(`Server listening to 3333`);
+fastify.listen({ port: PORT }).then(() => {
+  console.log(`Server listening to ${PORT}`);
 });

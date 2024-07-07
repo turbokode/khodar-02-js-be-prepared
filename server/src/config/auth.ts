@@ -1,4 +1,6 @@
+import { SECRET } from '../utils/env';
+
 export const authConfig = {
-  secret: 'app-secret',
+  secret: SECRET,
   expiresIn: '3d'
 };
