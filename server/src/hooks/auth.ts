@@ -8,7 +8,6 @@ export function authHook(request: FastifyRequest, reply: FastifyReply, done: (er
 
   try {
     const payload = jwt.verify(token, authConfig.secret);
-    console.log(payload);
     done();
   } catch (error) {
     console.log(error);

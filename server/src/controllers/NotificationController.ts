@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { db } from '../database';
+import dayjs from 'dayjs';
 
 export class NotificationController {
   async create(request: FastifyRequest, reply: FastifyReply) {
@@ -46,6 +47,29 @@ export class NotificationController {
       where: {
         subscriberId: subscriber.id
       }
+    });
+
+    return reply.send(notifications);
+  }
+  async list(request: FastifyRequest, reply: FastifyReply) {
+    const QuerySchema = z.object({
+      page: z.coerce.number().optional()
+    });
+    const { page = 0 } = QuerySchema.parse(request.query);
+    const notifications = await db.notification.findMany({
+      where: {
+        createdAt: {
+          gte: dayjs().subtract(28, 'day').format()
+        }
+      },
+      include: {
+        subscriber: true
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      skip: page * 10,
+      take: 10
     });
 
     return reply.send(notifications);

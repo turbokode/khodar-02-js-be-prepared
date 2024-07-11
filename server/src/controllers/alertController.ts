@@ -3,6 +3,7 @@ import { getMessaging } from 'firebase-admin/messaging';
 import { z } from 'zod';
 import { db } from '../database';
 import dayjs from 'dayjs';
+import { twilio, twilioConfig } from '../config/twilio';
 
 export class AlertController {
   async create(request: FastifyRequest, reply: FastifyReply) {
@@ -24,9 +25,10 @@ export class AlertController {
       return reply.status(400).send({ error: 'Distrito nao pertencente a provincia' });
     }
     //enviar notificacoes
-    const subscribersDeviceIds = await db.subscriber.findMany({
+    const subscribers = await db.subscriber.findMany({
       select: {
-        deviceId: true
+        deviceId: true,
+        phone: true
       },
       where: {
         districtId,
@@ -53,7 +55,22 @@ export class AlertController {
       }
     });
 
-    const tokens = subscribersDeviceIds.map((deviceId) => String(deviceId.deviceId));
+    subscribers.forEach((subscriber) => {
+      twilio.messages
+        .create({
+          body: `${alert.title}\n${alert.message}`,
+          from: twilioConfig.from,
+          to: `+258${subscriber.phone}`
+        })
+        .then((message) => {
+          console.log(message);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+
+    const tokens = subscribers.map((deviceId) => String(deviceId.deviceId));
 
     const alertNotification = {
       data: alert,

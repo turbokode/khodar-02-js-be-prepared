@@ -10,3 +10,6 @@ export const FIREBASE_PROJECT_ID = z.string().parse(process.env.FIREBASE_PROJECT
 export const FIREBASE_STORAGE_BUCKET = z.string().parse(process.env.FIREBASE_STORAGE_BUCKET);
 export const FIREBASE_MESSAGING_SENDER_ID = z.string().parse(process.env.FIREBASE_MESSAGING_SENDER_ID);
 export const FIREBASE_APP_ID = z.string().parse(process.env.FIREBASE_APP_ID);
+
+export const TWILIO_ACCOUNT_SID = z.string().parse(process.env.TWILIO_ACCOUNT_SID);
+export const TWILIO_AUTH_TOKEN = z.string().parse(process.env.TWILIO_AUTH_TOKEN);

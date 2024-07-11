@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { generate6DigitsNumber } from '../utils/utils';
 import { db } from '../database';
 import { redis } from '../database/redis';
+import { twilio, twilioConfig } from '../config/twilio';
 
 export class SubscriberController {
   async create(request: FastifyRequest, reply: FastifyReply) {
@@ -27,6 +28,19 @@ export class SubscriberController {
     if (!district) {
       return reply.status(400).send({ error: 'Distrito nao pertencente a provincia' });
     }
+
+    // Gerar um OTP
+    const otp = generate6DigitsNumber();
+    console.log(otp);
+    await redis.set(`otp_${otp}`, phone, 60 * 3);
+    // Enviar o OTP por SMS
+
+    const message = await twilio.messages.create({
+      body: `Use esse codigo para confirmar o seu numero: ${otp}`,
+      from: twilioConfig.from,
+      to: `+258${phone}`
+    });
+    console.log(message);
     // Guardar na DB
     const savedSubscriber = await db.subscriber.create({
       data: {
@@ -35,11 +49,6 @@ export class SubscriberController {
         provinceId
       }
     });
-    // Gerar um OTP
-    const otp = generate6DigitsNumber();
-    console.log(otp);
-    await redis.set(`otp_${otp}`, phone, 60 * 3);
-    // Enviar o OTP por SMS
 
     return reply.status(201).send(savedSubscriber);
   }
