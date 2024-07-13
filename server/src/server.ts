@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 import { initializeApp } from 'firebase-admin/app';
 import { routes } from './routes';
 import './database/redis';
@@ -10,6 +11,9 @@ initializeApp(firebaseConfig);
 
 const fastify = Fastify({
   logger: true
+});
+fastify.register(cors, {
+  origin: '*'
 });
 
 fastify.register(routes);
