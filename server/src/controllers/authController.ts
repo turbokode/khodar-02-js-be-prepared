@@ -41,6 +41,15 @@ export class AuthController {
     return reply.send(subscriber);
   }
 
+  async resendOtp(request: FastifyRequest, reply: FastifyReply) {
+    const { phone } = request.params;
+    const otp = generate6DigitsNumber();
+    console.log(otp);
+    await redis.set(`otp_${otp}`, phone, 3 * 60);
+
+    reply.status(204).send();
+  }
+
   async loginSubscriber(request: FastifyRequest, reply: FastifyReply) {
     const subscriberSchema = z.object({
       phone: z.string().regex(/^8[2-7]\d{7}/)

@@ -20,6 +20,7 @@ export async function routes(fastify: FastifyInstance) {
   fastify.put('/subscribers', (request, reply) => subscriberController.update(request, reply));
 
   fastify.post('/auth/subscribers/otp', (request, reply) => authController.authOtp(request, reply));
+  fastify.get('/auth/subscribers/otp/resend/:phone', (request, reply) => authController.resendOtp(request, reply));
   fastify.post('/auth/subscribers', (request, reply) => authController.loginSubscriber(request, reply));
   fastify.post('/auth/admin', (request, reply) => authController.loginAdmin(request, reply));
 
