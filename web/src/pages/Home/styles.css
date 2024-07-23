@@ -1,0 +1,71 @@
+#home-page > header {
+  padding: 1.6rem 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #00000040;
+}
+
+#home-page > header img {
+  width: 19.2rem;
+}
+
+#home-page .metrics {
+  margin-top: 1.6rem;
+  padding: 0 3.2rem;
+}
+
+#home-page .alerts-list {
+  margin-top: 1.6rem;
+  padding: 0 3.2rem;
+}
+
+#home-page main {
+  box-shadow: 0px 0px 4px 0px #00000040;
+  padding: 1.4rem;
+  border-radius: 0.8rem;
+}
+
+#home-page main header,
+#home-page main h1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+#home-page main table {
+  margin-top: 1.2rem;
+  border-spacing: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+#home-page main table thead tr th:first-child,
+#home-page main table thead tr th:last-child {
+  text-align: left;
+}
+
+#home-page main table th,
+#home-page main table td {
+  padding: 0.8rem 1.2rem;
+}
+
+#home-page main table tr {
+  /* display: block; */
+  /* width: 100%; */
+}
+
+#home-page main table tbody td {
+  vertical-align: top;
+  border-bottom: 0.5px solid #999999;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  /* text-wrap: nowrap; */
+  width: 10px;
+}
+
+#home-page main table tbody td:first-child {
+  max-width: 100%;
+}

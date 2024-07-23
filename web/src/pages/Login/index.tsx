@@ -1,21 +1,20 @@
 import logo from '../../assets/logo.svg';
+import { Input } from '../../components/Input';
+import './styles.css';
 
 export function Login() {
   return (
-    <div id="login-page">
-      <main>
+    <main id="login-page">
+      <header>
         <img src={logo} alt="Logo Beprepared" />
-        <form action="">
-          <label htmlFor="email">E-mail</label>
-          <input type="email" name="email" placeholder="example@beprepared.com" />
+      </header>
+      <form action="">
+        <Input label="E-mail" name="email" type="email" />
+        <Input label="Senha" name="password" type="password" />
 
-          <label htmlFor="password">Senha</label>
-          <input type="password" name="password" />
-
-          <button type="button">Esqueci a senha</button>
-          <button type="submit">Entrar</button>
-        </form>
-      </main>
-    </div>
+        <a href="/">Esqueci a senha</a>
+        <button type="submit">Entrar</button>
+      </form>
+    </main>
   );
 }
