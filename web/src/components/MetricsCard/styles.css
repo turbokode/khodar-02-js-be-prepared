@@ -25,3 +25,9 @@
 #metrics-card-block + #metrics-card-block {
   margin-top: 1.6rem;
 }
+
+@media (min-width: 768px) {
+  #metrics-card-block + #metrics-card-block {
+    margin-top: 0;
+  }
+}
