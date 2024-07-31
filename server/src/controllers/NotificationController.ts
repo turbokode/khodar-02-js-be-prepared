@@ -52,6 +52,7 @@ export class NotificationController {
     return reply.send(notifications);
   }
   async list(request: FastifyRequest, reply: FastifyReply) {
+    console.log('List called');
     const QuerySchema = z.object({
       page: z.coerce.number().optional()
     });

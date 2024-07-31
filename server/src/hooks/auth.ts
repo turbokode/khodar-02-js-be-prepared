@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { authConfig } from '../config/auth';
 
 export function authHook(request: FastifyRequest, reply: FastifyReply, done: (error?: FastifyError) => void) {
+  console.log(request.headers);
   const [, token] = z.string().parse(request.headers.authorization).split(' ');
 
   try {

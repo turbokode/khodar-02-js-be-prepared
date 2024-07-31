@@ -12,6 +12,7 @@ initializeApp(firebaseConfig);
 const fastify = Fastify({
   logger: true
 });
+
 fastify.register(cors, {
   origin: '*'
 });

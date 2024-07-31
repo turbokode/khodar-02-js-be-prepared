@@ -3,8 +3,68 @@ import { OctagonAlert, Bell, ChevronRight } from 'lucide-react';
 import './styles.css';
 import { MetricsCard } from '../../components/MetricsCard';
 import { ButtonWithIcon } from '../../components/ButtonWithIcon';
+import { useEffect, useState } from 'react';
+import { fetchData } from '../../services/api';
+import { DialogLayout } from '../../components/Dialog';
+
+interface StatsPropsSchema {
+  total: number;
+  last: number;
+}
+
+interface StatsProps {
+  subscribers: StatsPropsSchema;
+  alerts: StatsPropsSchema;
+  notifications: StatsPropsSchema;
+}
+
+interface AlertsProps {
+  id: string;
+  title: string;
+  message: string;
+  districtId: string;
+  provinceId: string;
+  createdAt: Date;
+  province: {
+    id: string;
+    designation: string;
+  };
+  district: {
+    id: string;
+    designation: string;
+  };
+}
+
+interface NotificationProps {
+  id: string;
+  subscriberId: string;
+  message: string;
+  createdAt: Date;
+  subscriber: {
+    id: string;
+    phone: string;
+    deviceId: string;
+    verified: boolean;
+  };
+}
 
 export function Home() {
+  const [stats, setStats] = useState<StatsProps | null>(null);
+  const [alerts, setAlerts] = useState<AlertsProps[]>([]);
+  const [notifications, setNotifications] = useState<NotificationProps[]>([]);
+  const [alertDialogOpen, setAlertDialogOpen] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetchData<StatsProps>('/stats'),
+      fetchData<AlertsProps[]>('/alerts'),
+      fetchData<NotificationProps[]>('/notifications')
+    ]).then(([stats, alerts, notifications]) => {
+      setStats(stats);
+      setAlerts(alerts);
+      setNotifications(notifications);
+    });
+  }, []);
   return (
     <div id="home-page">
       <header>
@@ -12,9 +72,13 @@ export function Home() {
         <ButtonWithIcon text="Alertar" Icon={OctagonAlert} />
       </header>
       <div className="metrics">
-        <MetricsCard title="Cadastros" total={8464} last={46} />
-        <MetricsCard title="Alertas" total={7464} last={76} />
-        <MetricsCard title="Notificações" total={4877} last={457} />
+        <MetricsCard title="Cadastros" total={stats?.subscribers.total || 0} last={stats?.subscribers.last || 0} />
+        <MetricsCard title="Alertas" total={stats?.alerts.total || 0} last={stats?.alerts.last || 0} />
+        <MetricsCard
+          title="Notificações"
+          total={stats?.notifications.total || 0}
+          last={stats?.notifications.last || 0}
+        />
       </div>
 
       <div className="alerts-list">
@@ -35,33 +99,15 @@ export function Home() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero ex nobis nihil repudiandae minus optio
-                  ratione similique voluptates accusantium laboriosam. Consequatur est maiores, excepturi nostrum beatae
-                  molestiae aut a blanditiis.
-                </td>
-                <td>2833</td>
-                <td>Maputo - Zimpeto</td>
-              </tr>
-              <tr>
-                <td>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero ex nobis nihil repudiandae minus optio
-                  ratione similique voluptates accusantium laboriosam. Consequatur est maiores, excepturi nostrum beatae
-                  molestiae aut a blanditiis.
-                </td>
-                <td>2833</td>
-                <td>Maputo - Zimpeto</td>
-              </tr>
-              <tr>
-                <td>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vero ex nobis nihil repudiandae minus optio
-                  ratione similique voluptates accusantium laboriosam. Consequatur est maiores, excepturi nostrum beatae
-                  molestiae aut a blanditiis.
-                </td>
-                <td>2833</td>
-                <td>Maputo - Zimpeto</td>
-              </tr>
+              {alerts.map((alert) => (
+                <tr key={alert.id}>
+                  <td>{alert.message}</td>
+                  <td>2833</td>
+                  <td>
+                    {alert.province.designation} - {alert.district.designation}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </main>
@@ -70,48 +116,31 @@ export function Home() {
           <header>
             <Bell size={24} color="#000" />
             <h2>Notificações</h2>
-            <span>4</span>
+            <span>{notifications.length}</span>
           </header>
           <ul>
-            <li>
-              <section>
-                <div className="circle full"></div>
-                <span>846383748</span> |{' '}
-                <span className="message">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos ratione ullam suscipit similique odit
-                  consectetur voluptatibus inventore libero voluptatum est, quidem, quam commodi vel laboriosam magni
-                  tempora quia officiis aperiam?
-                </span>
-              </section>
-              <ChevronRight size={12} color="#000" />
-            </li>
-            <li>
-              <section>
-                <div className="circle full"></div>
-                <span>846383748</span> |{' '}
-                <span className="message">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos ratione ullam suscipit similique odit
-                  consectetur voluptatibus inventore libero voluptatum est, quidem, quam commodi vel laboriosam magni
-                  tempora quia officiis aperiam?
-                </span>
-              </section>
-              <ChevronRight size={12} color="#000" />
-            </li>
-            <li>
-              <section>
-                <div className="circle"></div>
-                <span>846383748</span> |{' '}
-                <span className="message">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quos ratione ullam suscipit similique odit
-                  consectetur voluptatibus inventore libero voluptatum est, quidem, quam commodi vel laboriosam magni
-                  tempora quia officiis aperiam?
-                </span>
-              </section>
-              <ChevronRight size={12} color="#000" />
-            </li>
+            {notifications.map((notification) => (
+              <li key={notification.id}>
+                <section>
+                  <div className="circle"></div>
+                  <span>{notification.subscriber.phone}</span> | <span className="message">{notification.message}</span>
+                </section>
+                <ChevronRight size={12} color="#000" />
+              </li>
+            ))}
           </ul>
         </aside>
       </div>
+      <DialogLayout
+        open={alertDialogOpen}
+        onOpenChange={setAlertDialogOpen}
+        title="Novo alerta"
+        IconTitle={OctagonAlert}
+        buttonText="Alertar"
+        IconButton={OctagonAlert}
+      >
+        Form
+      </DialogLayout>
     </div>
   );
 }

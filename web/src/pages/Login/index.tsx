@@ -4,6 +4,7 @@ import { Input } from '../../components/Input';
 import './styles.css';
 import { api, postData } from '../../services/api';
 import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../services/auth';
 
 interface LoginResponseProps {
   token: string;
@@ -21,12 +22,10 @@ export function Login() {
 
   function handleSubmitLogin(e: FormEvent) {
     e.preventDefault();
-    postData<LoginResponseProps>('/auth/admin', {
-      email,
-      password
-    })
+    login(email, password)
       .then((response) => {
         api.defaults.headers.Authorization = `Bearer ${response.token}`;
+        localStorage.setItem('@BePrepared:token', response.token);
         navigate('/dashboard');
       })
       .catch((error) => {
