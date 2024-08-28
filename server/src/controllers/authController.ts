@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { z } from 'zod';
+import { number, z } from 'zod';
 import { redis } from '../database/redis';
 import { db } from '../database';
 import { generate6DigitsNumber } from '../utils/utils';
@@ -42,9 +42,11 @@ export class AuthController {
   }
 
   async resendOtp(request: FastifyRequest, reply: FastifyReply) {
-    const { phone } = request.params;
+    const paramsSchema = z.object({
+      phone: z.string()
+    });
+    const { phone } = paramsSchema.parse(request.params);
     const otp = generate6DigitsNumber();
-    console.log(otp);
     await redis.set(`otp_${otp}`, phone, 3 * 60);
 
     reply.status(204).send();

@@ -1,32 +1,40 @@
 import { RedisClientType, createClient } from 'redis';
+import { REDIS_URL } from '../utils/env';
 class Redis {
-  #client: RedisClientType;
+  private readonly client: RedisClientType;
   constructor() {
-    createClient()
-      .on('error', (err) => {
-        console.log('Redis Client Error', err);
-        throw new Error(err);
-      })
+    this.client = createClient({
+      url: REDIS_URL
+    });
+
+    this.client.on('error', (err) => {
+      console.log('Redis Client Error', err);
+      throw new Error(err);
+    });
+
+    this.client
       .connect()
-      .then((client) => {
-        this.#client = client;
-        console.log('Successfully connected to redis!');
+      .then(() => {
+        console.log('Successfuly connected to redis');
+      })
+      .catch((error) => {
+        throw new Error(error);
       });
   }
 
   async set(key: string, value: string | number, duration: number) {
-    await this.#client.set(key, value, {
+    await this.client.set(key, value, {
       EX: duration
     });
   }
 
   async get(key: string) {
-    const value = await this.#client.get(key);
+    const value = await this.client.get(key);
     return value;
   }
 
   async delete(key: string) {
-    await this.#client.del(key);
+    await this.client.del(key);
   }
 }
 
