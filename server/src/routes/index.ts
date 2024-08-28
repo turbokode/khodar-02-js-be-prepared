@@ -15,6 +15,9 @@ const locationController = new LocationController();
 const appController = new AppController();
 
 export async function routes(fastify: FastifyInstance) {
+  fastify.get('/status', (request, reply) => {
+    reply.send('API running')
+  });
   fastify.get('/stats', (request, reply) => appController.getStats(request, reply));
   fastify.post('/subscribers', (request, reply) => subscriberController.create(request, reply));
   fastify.put('/subscribers', (request, reply) => subscriberController.update(request, reply));
