@@ -1,15 +1,16 @@
-import { RouterProvider } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './styles/global.css';
-import { router } from './routes';
-import { useEffect } from 'react';
-import { api } from './services/api';
+import { Router } from './routes';
+import { AuthProvider } from './contexts/auth';
 
 function App() {
-  useEffect(() => {
-    const token = localStorage.getItem('@BePrepared:token');
-    api.defaults.headers.Authorization = `Bearer ${token}`;
-  }, []);
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App;

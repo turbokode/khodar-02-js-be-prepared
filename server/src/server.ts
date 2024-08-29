@@ -19,6 +19,6 @@ fastify.register(cors, {
 
 fastify.register(routes);
 
-fastify.listen({ port: PORT }).then(() => {
+fastify.listen({ port: PORT, host: '0.0.0.0' }).then(() => {
   console.log(`Server listening to ${PORT}`);
 });

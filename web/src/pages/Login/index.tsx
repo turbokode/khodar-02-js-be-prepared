@@ -1,34 +1,23 @@
-import { FormEvent, FormEventHandler, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import logo from '../../assets/logo.svg';
 import { Input } from '../../components/Input';
 import './styles.css';
-import { api, postData } from '../../services/api';
-import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../services/auth';
-
-interface LoginResponseProps {
-  token: string;
-  admin: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/auth';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  const { login } = useAuth();
   function handleSubmitLogin(e: FormEvent) {
     e.preventDefault();
     login(email, password)
-      .then((response) => {
-        api.defaults.headers.Authorization = `Bearer ${response.token}`;
-        localStorage.setItem('@BePrepared:token', response.token);
+      .then(() => {
         navigate('/dashboard');
       })
-      .catch((error) => {
+      .catch(() => {
         alert('Falha na autenticacao');
       });
   }

@@ -9,8 +9,6 @@ interface DialogProps {
   onOpenChange: Dispatch<React.SetStateAction<boolean>>;
   title: string;
   IconTitle: LucideIcon;
-  buttonText: string;
-  IconButton: LucideIcon;
 }
 
 export function DialogLayout({
@@ -18,8 +16,6 @@ export function DialogLayout({
   onOpenChange,
   title,
   IconTitle,
-  buttonText,
-  IconButton,
   children
 }: PropsWithChildren<DialogProps>) {
   return (
@@ -32,14 +28,9 @@ export function DialogLayout({
             <span>{title}</span>
           </Dialog.Title>
           {children}
-          <div style={{ display: 'flex', marginTop: 25, justifyContent: 'flex-end' }}>
-            <Dialog.Close asChild>
-              <ButtonWithIcon text={buttonText} Icon={IconButton} />
-            </Dialog.Close>
-          </div>
           <Dialog.Close asChild>
             <button className="IconButton" aria-label="Close">
-              <X size={14} color="#000000" />
+              <X size={16} color="#000000" />
             </button>
           </Dialog.Close>
         </Dialog.Content>

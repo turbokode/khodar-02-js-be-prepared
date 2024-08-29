@@ -10,6 +10,31 @@
   width: 19.2rem;
 }
 
+#home-page > header .actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+#home-page > header .logout {
+  border: 2px solid #db2b51;
+  height: 4rem;
+  width: 4rem;
+  border-radius: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: transparent;
+  color: #db2b51;
+  opacity: 0.6;
+}
+
+#home-page > header .logout:hover {
+  /* box-shadow: 0 0 0 2px #db2b51; */
+  opacity: 1;
+}
+
 #home-page .metrics {
   margin-top: 1.6rem;
   padding: 0 3.2rem;
@@ -146,6 +171,24 @@
   background-color: #4a4b52;
 }
 
+.DialogContent form {
+  margin-top: 2rem;
+}
+.DialogContent form fieldset {
+  border: 0;
+  display: flex;
+  gap: 1.6rem;
+}
+
+.DialogContent #textarea-with-icon-block {
+  margin-top: 1.2rem;
+}
+
+.DialogContent form .form-submit-button {
+  margin-top: 1.2rem;
+  display: flex;
+  justify-content: flex-end;
+}
 @media (min-width: 768px) {
   #home-page .metrics,
   #home-page .alerts-list {

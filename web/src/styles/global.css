@@ -16,6 +16,12 @@ body {
   background-color: #ffffff;
 }
 
+textarea {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  color: #000000;
+}
+
 h1,
 h2 {
   font-size: 1.6rem;
