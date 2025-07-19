@@ -63,23 +63,29 @@ export class AlertController {
           to: `+258${subscriber.phone}`
         })
         .then((message) => {
-          console.log(message);
+          // console.log(message);
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
         });
     });
 
     const tokens = subscribers.map((deviceId) => String(deviceId.deviceId));
+    console.log(tokens);
 
     const alertNotification = {
-      data: alert,
+      notification: {
+        body: alert.message,
+        title: alert.title
+      },
+
       tokens
     };
 
     try {
-      const response = await getMessaging().sendMulticast(alertNotification);
-      console.log(response.successCount + ' messages were sent successfully');
+      const response = await getMessaging().sendEachForMulticast(alertNotification);
+      console.log(response.responses);
+
       return reply.send(alert);
     } catch (error) {
       console.log(error);

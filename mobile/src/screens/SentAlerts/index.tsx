@@ -1,31 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Bell, MessageCircleWarning, OctagonAlert, SendHorizonal, SendHorizontal } from 'lucide-react-native';
 import { Text, View, FlatList, TouchableOpacity, Modal, TextInput } from 'react-native';
 import { AlertListItem } from '../../components/AlertListItem';
 import { styles } from './styles';
+import { fetchData, postData } from '../../services/api';
+import { useAuth } from '../../contexts/auth';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    message:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet quo itaque accusamus deleniti assumenda nulla quas reiciendis ratione voluptas suscipit dolor esse iste, nihil nisi officiis? Unde tempora rerum nobis.'
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    message:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet quo itaque accusamus deleniti assumenda nulla quas reiciendis ratione voluptas suscipit dolor esse iste, nihil nisi officiis? Unde tempora rerum nobis.'
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    message:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet quo itaque accusamus deleniti assumenda nulla quas reiciendis ratione voluptas suscipit dolor esse iste, nihil nisi officiis? Unde tempora rerum nobis.'
-  }
-];
+interface NotificationProps {
+  id: string;
+  subscriberId: string;
+  message: string;
+  createdAt: Date;
+  subscriber: {
+    id: string;
+    phone: string;
+    deviceId: string;
+    verified: boolean;
+  };
+}
 
 export function SentAlerts() {
-  const [alerts, setAlerts] = useState(DATA);
+  const [alerts, setAlerts] = useState<NotificationProps[]>([]);
   const [openAlertItemId, setOpenAlertItemId] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const { subscriber } = useAuth();
+
+  useEffect(() => {
+    fetchAlerts();
+  }, []);
+
+  function fetchAlerts() {
+    fetchData<NotificationProps[]>(`/notifications/${subscriber?.phone}`).then((alerts) => {
+      setAlerts(alerts);
+    });
+  }
 
   function handleSetOpenAlertItem(id: string) {
     setOpenAlertItemId(id);
@@ -34,8 +44,17 @@ export function SentAlerts() {
   function handleOpenModal() {
     setModalOpen(true);
   }
-  function handleOCloseModal() {
+  function handleCloseModal() {
     setModalOpen(false);
+  }
+
+  function handleSendAlert() {
+    postData('/notifications', { message }).then((response) => {
+      alert('Alerta criado com sucesso');
+      handleCloseModal();
+      setMessage('');
+      fetchAlerts();
+    });
   }
 
   return (
@@ -66,7 +85,7 @@ export function SentAlerts() {
         <MessageCircleWarning color="#FFF" size={24} />
       </TouchableOpacity>
       <Modal transparent visible={modalOpen} animationType="fade">
-        <TouchableOpacity activeOpacity={0.9} style={styles.modalContainer} onPress={handleOCloseModal}>
+        <TouchableOpacity activeOpacity={0.9} style={styles.modalContainer} onPress={handleCloseModal}>
           <TouchableOpacity activeOpacity={1} style={{ width: '100%' }}>
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
@@ -74,8 +93,14 @@ export function SentAlerts() {
                 <Text style={styles.modalTitle}>Escreva a mensagem</Text>
               </View>
               <View style={styles.modalInputContainer}>
-                <TextInput multiline numberOfLines={6} style={styles.modalInput} />
-                <TouchableOpacity style={styles.modalButton}>
+                <TextInput
+                  multiline
+                  numberOfLines={6}
+                  style={styles.modalInput}
+                  value={message}
+                  onChangeText={setMessage}
+                />
+                <TouchableOpacity style={styles.modalButton} onPress={handleSendAlert}>
                   <Text style={styles.modalButtonText}>Enviar</Text>
                   <SendHorizontal color="#DB2B51" />
                 </TouchableOpacity>

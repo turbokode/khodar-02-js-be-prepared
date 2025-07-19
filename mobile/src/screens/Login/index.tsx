@@ -6,12 +6,13 @@ import Logo from '../../assets/logo.svg';
 import { LoginForm } from '../../components/LoginForm';
 import { StackParamList } from '../../routes/AppStack';
 import { CreateAccountForm } from '../../components/CreateAccountForm';
+import { useAuth } from '../../contexts/auth';
 
 export function Login({ navigation }: NativeStackScreenProps<StackParamList, 'Login'>) {
   const [activeForm, setActiveForm] = useState<'login' | 'createAccount'>('login');
 
-  function navigate() {
-    navigation.navigate('Otp');
+  function navigate(phone: string) {
+    navigation.navigate('Otp', { phone });
   }
   return (
     <View style={styles.container}>

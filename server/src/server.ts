@@ -1,13 +1,17 @@
 import 'dotenv/config';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
+import admin from 'firebase-admin';
 import { initializeApp } from 'firebase-admin/app';
 import { routes } from './routes';
 import './database/redis';
 import { firebaseConfig } from './config/firebase';
 import { PORT } from './utils/env';
 
-initializeApp(firebaseConfig);
+// initializeApp(firebaseConfig);
+initializeApp({
+  credential: admin.credential.cert('./.firebase/beprepared-service-account.json')
+});
 
 const fastify = Fastify({
   logger: true

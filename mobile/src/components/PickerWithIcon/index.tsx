@@ -9,23 +9,19 @@ interface Option {
   designation: string;
 }
 
-interface InputProps extends ComponentProps<typeof Picker> {
+interface InputProps extends ComponentProps<typeof Picker<string>> {
   title: string;
   options: Option[];
   Icon: LucideIcon;
+  // selectedValue: string;
+  // onValueChange: () => void
 }
 export function PickerWithIcon({ title, options, Icon, ...props }: InputProps) {
   return (
     <View style={styles.container}>
       <Icon color={'#000000'} />
-      <Picker
-        style={styles.picker}
-        prompt={title}
-        {...props}
-
-        // selectedValue={selectedLanguage} onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
-      >
-        <Picker.Item label={title} value={title} enabled={false} />
+      <Picker style={styles.picker} prompt={title} {...props}>
+        <Picker.Item label={`Selecione ${title}`} value={title} enabled={false} />
         {options.map((option) => (
           <Picker.Item label={option.designation} value={option.id} key={option.id} />
         ))}

@@ -1,30 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react-native';
 import { Text, View, FlatList } from 'react-native';
 import { AlertListItem } from '../../components/AlertListItem';
 import { styles } from './styles';
+import { useAuth } from '../../contexts/auth';
+import { fetchData } from '../../services/api';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    message:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet quo itaque accusamus deleniti assumenda nulla quas reiciendis ratione voluptas suscipit dolor esse iste, nihil nisi officiis? Unde tempora rerum nobis.'
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    message:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet quo itaque accusamus deleniti assumenda nulla quas reiciendis ratione voluptas suscipit dolor esse iste, nihil nisi officiis? Unde tempora rerum nobis.'
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    message:
-      'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eveniet quo itaque accusamus deleniti assumenda nulla quas reiciendis ratione voluptas suscipit dolor esse iste, nihil nisi officiis? Unde tempora rerum nobis.'
-  }
-];
+interface AlertsProps {
+  id: string;
+  title: string;
+  message: string;
+  districtId: string;
+  provinceId: string;
+  createdAt: Date;
+  province: {
+    id: string;
+    designation: string;
+  };
+  district: {
+    id: string;
+    designation: string;
+  };
+}
 
 export function Home() {
-  const [alerts, setAlerts] = useState(DATA);
+  const [alerts, setAlerts] = useState<AlertsProps[]>([]);
   const [openAlertItemId, setOpenAlertItemId] = useState('');
+
+  const { subscriber } = useAuth();
+
+  useEffect(() => {
+    fetchData<AlertsProps[]>(`/alerts?provinceId=${subscriber?.provinceId}&districtId=${subscriber?.districtId}`).then(
+      (alerts) => {
+        setAlerts(alerts);
+      }
+    );
+  }, []);
 
   function handleSetOpenAlertItem(id: string) {
     setOpenAlertItemId(id);
@@ -43,7 +54,7 @@ export function Home() {
         data={alerts}
         renderItem={({ item }) => (
           <AlertListItem
-					id={item.id}
+            id={item.id}
             message={item.message}
             isOpen={openAlertItemId === item.id}
             onSetOpenItem={handleSetOpenAlertItem}
