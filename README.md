@@ -1,42 +1,40 @@
 # [BePrepared]
 
-## Table of Contents
+## Índice
 
-- [\[BePrepared\]](#beprepared)
-  - [Table of Contents](#table-of-contents)
-  - [About the project](#about-the-project)
-    - [Core features](#core-features)
-    - [Tecnologias](#tecnologias)
-  - [How to contribute](#how-to-contribute)
-    - [Report Problems or Suggestions](#report-problems-or-suggestions)
-    - [Contribute with Code](#contribute-with-code)
-  - [License📝](#license)
+- [Sobre o projeto](#sobre-o-projeto)
+  - [Funcionalidades principais](#funcionalidades-principais)
+  - [Tecnologias utilizadas](#tecnologias-utilizadas)
+- [Como contribuir](#como-contribuir)
+  - [Relatar problemas ou sugestões](#relatar-problemas-ou-sugestões)
+  - [Contribuir com código](#contribuir-com-código)
+- [Licença](#licença)
 
-## About the project
+## Sobre o projeto
 
-This is the BePrepared app. This app allows users to stay informed and safe during natural disasters.
+O **BePrepared** é um aplicativo projetado para manter os usuários informados e seguros durante desastres naturais. 
 
-### Core features
+### Funcionalidades principais
 
-1. Real-time alerts
+1. **Alertas em tempo real**
+   
+   - Notificações instantâneas via push e SMS com informações claras e concisas sobre desastres em uma área específica, incluindo o nível de severidade, instruções e dicas de segurança.
 
-   - Instant push and SMS notifications with clear and concise information about disasters in a given area, including severity level, instructions and safety tips.
+2. **Alertas direcionados**
 
-2. Targeted alerts
+   - Alertas personalizados com base na localização do usuário.
 
-   - Alerts will be specific to the user's location.
+3. **Seção de recursos**
 
-3. Resource Section
+   - Uma seção abrangente de recursos com informações de contato de emergência, locais de abrigos de evacuação e guias de preparação para desastres.
 
-   - A comprehensive resource section with emergency contact information, evacuation shelter locations, and disaster preparedness guides.
+4. **Portal administrativo**
 
-4. Admin portal
+   - Um portal de administração baseado na web para gerenciar o aplicativo.
+   - Possibilidade de visualizar uma lista de desastres em andamento e o número de usuários em cada local.
+   - Capacidade de criar e enviar alertas direcionados com diferentes níveis de severidade e modelos de mensagens predefinidos.
 
-   - A web-based administration portal to manage the app.
-   - It will be possible to see a list of ongoing disasters and the number of users in each location
-   - It will be possible to create and send targeted alerts with different severity levels and predefined message models.
-
-### Tecnologias
+### Tecnologias utilizadas
 
 - [Node.js](https://nodejs.org/)
 - [Fastify](https://fastify.dev/)
@@ -47,28 +45,26 @@ This is the BePrepared app. This app allows users to stay informed and safe duri
 - [Firebase Cloud Messaging](https://firebase.google.com/docs/cloud-messaging)
 - [React Native](https://reactnative.dev/)
 
-## How to contribute
+## Como contribuir
 
-Your contribution is welcome! Follow the steps below to collaborate with the development of this project.
+Sua contribuição é bem-vinda! Siga os passos abaixo para colaborar com o desenvolvimento deste projeto.
 
-### Report Problems or Suggestions
+### Relatar problemas ou sugestões
 
-If you encounter any problems or have suggestions for improvement, please open an **issue** in this repository. Be sure to include detailed information about the problem and/or your suggestion.
+Se encontrar algum problema ou tiver sugestões de melhorias, por favor, abra uma **issue** neste repositório. Certifique-se de incluir informações detalhadas sobre o problema e/ou sua sugestão.
 
-### Contribute with Code
+### Contribuir com código
 
-If you want to directly contribute code, follow the steps below:
+Caso deseje contribuir diretamente com código, siga os passos abaixo:
 
-1. Fork this repository.
-2. Create a new branch for your contribution: `git checkout -b your-feature`.
-3. Make the desired changes.
-4. Be sure to test your changes.
-5. Commit your changes: `git commit -m "Add your-feature"`.
-6. Push to your branch: `git push origin your-feature`.
-7. Open a **pull request** on this repository.
+1. Faça um fork deste repositório.
+2. Crie uma nova branch para sua contribuição: `git checkout -b sua-feature`.
+3. Faça as alterações desejadas.
+4. Certifique-se de testar suas alterações.
+5. Faça commit das suas alterações: `git commit -m "Adicione sua-feature"`.
+6. Envie suas alterações para sua branch: `git push origin sua-feature`.
+7. Abra um **pull request** neste repositório.
 
-## License📝
+## Licença
 
-This project is under the Apache V2 license. check the [LICENSE](LICENSE) file for details.
-
----
+Este projeto está sob a licença Apache V2. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
